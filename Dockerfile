@@ -42,7 +42,7 @@ FROM symbolicator-deps AS symbolicator-builder
 
 # Build with the modern compiler toolchain enabled
 RUN echo -e "[net]\ngit-fetch-with-cli = true" > $CARGO_HOME/config \
-    && git clone --branch 21.5.0 https://github.com/getsentry/symbolicator.git . \
+    && git clone --branch 0.3.3 https://github.com/getsentry/symbolicator.git . \
     && git update-index --skip-worktree $(git status | grep deleted | awk '{print $2}') \
     && cargo build --release --locked \
     && objcopy --only-keep-debug target/release/symbolicator target/release/symbolicator.debug \
