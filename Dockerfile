@@ -15,7 +15,7 @@ ENV RUST_TOOLCHAIN_VERSION=${RUST_TOOLCHAIN_VERSION}
 # relay的编译依赖cmake3.2以上，系统默认的是2.8.12.2
 COPY ./cmake-3.24.3.tar.gz /
 RUN set -x \
-    && yum --nogpg install -y gcc gcc-c++ make \
+    && yum --nogpg install -y gcc gcc-c++ make openssl-devel \
     && tar zxvf cmake-3.* \
     && rm cmake-3.*tar.gz \
     && cd cmake-3.* \
