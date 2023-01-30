@@ -16,7 +16,6 @@ COPY ./cmake-3.19.4.tar.gz /
 RUN set -x \
     && yum --nogpg install -y gcc \
     && gcc -v \
-    && g++ -v \
     && tar zxvf cmake-3.* \
     && rm cmake-3.*tar.gz \
     && cd cmake-3.* \
