@@ -32,7 +32,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
     | sh -s -- -y --profile minimal --default-toolchain=${RUST_TOOLCHAIN_VERSION}
 
-# WORKDIR /work
+WORKDIR /work
 
 # #####################
 # ### Builder stage ###
@@ -40,20 +40,20 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
 
 # FROM symbolicator-deps AS symbolicator-builder
 
-# # Build with the modern compiler toolchain enabled
-# RUN echo -e "[net]\ngit-fetch-with-cli = true" > $CARGO_HOME/config \
-#     && git clone --branch 0.3.3 https://github.com/getsentry/symbolicator.git . \
-#     # && git update-index --skip-worktree $(git status | grep deleted | awk '{print $2}') \
-#     && cargo build --release --locked \
-#     && objcopy --only-keep-debug target/release/symbolicator target/release/symbolicator.debug \
-#     && objcopy --strip-debug --strip-unneeded target/release/symbolicator \
-#     && objcopy --add-gnu-debuglink target/release/symbolicator target/release/symbolicator.debug \
-#     && cp ./target/release/symbolicator /usr/local/bin \
-#     && zip /opt/symbolicator-debug.zip target/release/symbolicator.debug
+# Build with the modern compiler toolchain enabled
+RUN echo -e "[net]\ngit-fetch-with-cli = true" > $CARGO_HOME/config \
+    && git clone --branch 0.3.3 https://github.com/getsentry/symbolicator.git . \
+    # && git update-index --skip-worktree $(git status | grep deleted | awk '{print $2}') \
+    && cargo build --release --locked \
+    && objcopy --only-keep-debug target/release/symbolicator target/release/symbolicator.debug \
+    && objcopy --strip-debug --strip-unneeded target/release/symbolicator \
+    && objcopy --add-gnu-debuglink target/release/symbolicator target/release/symbolicator.debug \
+    && cp ./target/release/symbolicator /usr/local/bin \
+    && zip /opt/symbolicator-debug.zip target/release/symbolicator.debug
 
-# COPY ./sentry-cli-Linux-x86_64 /bin/sentry-cli
-# RUN chmod ugo+x /bin/sentry-cli \
-#     # Collect source bundle
-#     && sentry-cli --version \
-#     && SOURCE_BUNDLE="$(sentry-cli difutil bundle-sources ./target/release/symbolicator.debug)" \
-#     && mv "$SOURCE_BUNDLE" /opt/symbolicator.src.zip
+COPY ./sentry-cli-Linux-x86_64 /bin/sentry-cli
+RUN chmod ugo+x /bin/sentry-cli \
+    # Collect source bundle
+    && sentry-cli --version \
+    && SOURCE_BUNDLE="$(sentry-cli difutil bundle-sources ./target/release/symbolicator.debug)" \
+    && mv "$SOURCE_BUNDLE" /opt/symbolicator.src.zip
