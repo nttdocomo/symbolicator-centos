@@ -3,7 +3,7 @@ FROM centos:7.8.2003 AS symbolicator-deps
 
 ARG BUILD_ARCH=x86_64
 # Pin the Rust version for now
-ARG RUST_TOOLCHAIN_VERSION=1.49.0
+ARG RUST_TOOLCHAIN_VERSION=1.50.0
 ENV BUILD_ARCH=${BUILD_ARCH}
 ENV RUST_TOOLCHAIN_VERSION=${RUST_TOOLCHAIN_VERSION}
 
@@ -42,7 +42,7 @@ FROM symbolicator-deps AS symbolicator-builder
 # Build with the modern compiler toolchain enabled
 RUN echo -e "[net]\ngit-fetch-with-cli = true" > $CARGO_HOME/config \
     && git clone --branch 0.3.3 https://github.com/getsentry/symbolicator.git . \
-    && git update-index --skip-worktree $(git status | grep deleted | awk '{print $2}') \
+    # && git update-index --skip-worktree $(git status | grep deleted | awk '{print $2}') \
     && cargo build --release --locked \
     && objcopy --only-keep-debug target/release/symbolicator target/release/symbolicator.debug \
     && objcopy --strip-debug --strip-unneeded target/release/symbolicator \
