@@ -12,17 +12,17 @@ ENV RUST_TOOLCHAIN_VERSION=${RUST_TOOLCHAIN_VERSION}
 #     PATH=/usr/local/cargo/bin:$PATH
 
 # relay的编译依赖cmake3.2以上，系统默认的是2.8.12.2
-COPY ./cmake-3.19.4.tar.gz /
+# COPY ./cmake-3.19.4.tar.gz /
 RUN set -x \
     && yum --nogpg install -y gcc \
     && gcc -v \
-    && tar zxvf cmake-3.* \
-    && rm cmake-3.*tar.gz \
-    && cd cmake-3.* \
-    && ./bootstrap --prefix=/usr/local \
-    && make -j$(nproc) \
-    && make install \
-    && rm -rf /cmake-3.* \
+    # && tar zxvf cmake-3.* \
+    # && rm cmake-3.*tar.gz \
+    # && cd cmake-3.* \
+    # && ./bootstrap --prefix=/usr/local \
+    # && make -j$(nproc) \
+    # && make install \
+    # && rm -rf /cmake-3.* \
     && yum clean all
 
 ENV RUSTUP_HOME=/usr/local/rustup \
