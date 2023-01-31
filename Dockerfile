@@ -14,6 +14,10 @@ ENV RUST_TOOLCHAIN_VERSION=${RUST_TOOLCHAIN_VERSION}
 # relay的编译依赖cmake3.2以上，系统默认的是2.8.12.2
 # COPY ./cmake-3.19.4.tar.gz /
 RUN set -x \
+    && yum install epel-release \
+    && yum clean all \
+    && yum update \
+    && yum makecache \
     && yum install -y centos-release-scl scl-utils devtoolset-9-gcc* \
     && scl enable devtoolset-9 bash \
     && gcc -v \
