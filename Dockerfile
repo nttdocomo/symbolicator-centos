@@ -21,7 +21,8 @@ RUN set -x \
     && yum install -y centos-release-scl scl-utils \
     && yum install -y devtoolset-7-gcc* \
     # && yum install -y gcc-6 \
-    && scl enable devtoolset-7 \
+    && echo "source scl_source enable devtoolset-7" >> /etc/bashrc \
+    && source /etc/bashrc \
     && gcc -v \
     # && tar zxvf cmake-3.* \
     # && rm cmake-3.*tar.gz \
