@@ -24,6 +24,7 @@ RUN set -x \
     && echo "source scl_source enable devtoolset-7" >> /etc/bashrc \
     && source /etc/bashrc \
     && gcc -v \
+    && gcc-c++ -v \
     # && tar zxvf cmake-3.* \
     # && rm cmake-3.*tar.gz \
     # && cd cmake-3.* \
