@@ -18,7 +18,7 @@ RUN set -x \
     && yum clean all -y \
     && yum update -y \
     && yum makecache -y \
-    && yum install -y centos-release-scl scl-utils git \
+    && yum install -y centos-release-scl scl-utils git openssl-devel \
     && yum install -y devtoolset-7-gcc* \
     # && yum install -y gcc-6 \
     # && tar zxvf cmake-3.* \
