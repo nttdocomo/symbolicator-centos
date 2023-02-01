@@ -18,7 +18,7 @@ RUN set -x \
     && yum clean all -y \
     && yum update -y \
     && yum makecache -y \
-    && yum install -y centos-release-scl scl-utils devtoolset-9-gcc* \
+    && yum install -y centos-release-scl scl-utils devtoolset-6-gcc* \
     && scl enable devtoolset-9 bash \
     && gcc -v \
     # && tar zxvf cmake-3.* \
