@@ -14,7 +14,7 @@ ENV RUST_TOOLCHAIN_VERSION=${RUST_TOOLCHAIN_VERSION}
 # relay的编译依赖cmake3.2以上，系统默认的是2.8.12.2
 # COPY ./cmake-3.19.4.tar.gz /
 RUN set -x \
-    && wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo \
+    && curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo \
     && yum install epel-release -y \
     && yum clean all -y \
     && yum update -y \
