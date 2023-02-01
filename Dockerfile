@@ -15,11 +15,11 @@ ENV RUST_TOOLCHAIN_VERSION=${RUST_TOOLCHAIN_VERSION}
 # COPY ./cmake-3.19.4.tar.gz /
 RUN set -x \
     && curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo \
-    && yum install epel-release -y \
     && yum clean all -y \
     && yum update -y \
     && yum makecache -y \
-    && yum install -y centos-release-scl scl-utils devtoolset-6-gcc* \
+    && yum install -y centos-release-scl scl-utils \
+    && yum install -y devtoolset-6-gcc* \
     # && yum install -y gcc-6 \
     && scl enable devtoolset-6 bash \
     && gcc -v \
