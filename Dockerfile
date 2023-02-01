@@ -23,8 +23,6 @@ RUN set -x \
     # && yum install -y gcc-6 \
     && echo "source scl_source enable devtoolset-7" >> /etc/bashrc \
     && source /etc/bashrc \
-    && gcc -v \
-    && gcc-c++ -v \
     # && tar zxvf cmake-3.* \
     # && rm cmake-3.*tar.gz \
     # && cd cmake-3.* \
@@ -51,6 +49,8 @@ WORKDIR /work
 
 # Build with the modern compiler toolchain enabled
 RUN echo -e "[net]\ngit-fetch-with-cli = true" > $CARGO_HOME/config \
+    && gcc -v \
+    && gcc-c++ -v \
     && git clone --branch 0.3.3 https://github.com/getsentry/symbolicator.git . \
     # && git update-index --skip-worktree $(git status | grep deleted | awk '{print $2}') \
     && cargo build --release --locked \
