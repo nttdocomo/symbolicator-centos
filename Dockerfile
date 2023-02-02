@@ -28,6 +28,7 @@ RUN set -x \
     # && make -j$(nproc) \
     # && make install \
     # && rm -rf /cmake-3.* \
+    && yum autoremove centos-release-scl scl-utils git openssl-devel zip devtoolset-7-gcc* \
     && yum clean all
 
 ENV RUSTUP_HOME=/usr/local/rustup \
