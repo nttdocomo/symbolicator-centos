@@ -18,8 +18,8 @@ RUN set -x \
     && yum clean all -y \
     && yum update -y \
     && yum makecache -y \
-    && yum install -y centos-release-scl scl-utils git openssl-devel zip \
-    && yum install -y devtoolset-7-gcc* \
+    && yum --nogpg install -y centos-release-scl scl-utils git openssl-devel zip \
+    && yum --nogpg install -y devtoolset-7-gcc* \
     # && yum install -y gcc-6 \
     # && tar zxvf cmake-3.* \
     # && rm cmake-3.*tar.gz \
@@ -28,7 +28,6 @@ RUN set -x \
     # && make -j$(nproc) \
     # && make install \
     # && rm -rf /cmake-3.* \
-    && yum autoremove centos-release-scl scl-utils git openssl-devel zip devtoolset-7-gcc* \
     && yum clean all
 
 ENV RUSTUP_HOME=/usr/local/rustup \
