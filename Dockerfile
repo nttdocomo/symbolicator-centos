@@ -1,5 +1,5 @@
 # FROM python:3.6.13-slim-buster
-FROM centos:7.8.2003 AS symbolicator-deps
+FROM centos:7.8.2003
 
 ARG BUILD_ARCH=x86_64
 # Pin the Rust version for now
