@@ -34,9 +34,9 @@ WORKDIR /work
 # #####################
 
 # Build with the modern compiler toolchain enabled
-RUN echo "source scl_source enable devtoolset-7" >> /etc/bashrc \
-    && source /etc/bashrc \
-    && echo -e "[net]\ngit-fetch-with-cli = true" > $CARGO_HOME/config \
+# RUN echo "source scl_source enable devtoolset-7" >> /etc/bashrc \
+#     && source /etc/bashrc \
+RUN echo -e "[net]\ngit-fetch-with-cli = true" > $CARGO_HOME/config \
     && git clone --branch 0.3.3 https://github.com/getsentry/symbolicator.git . \
     # && git update-index --skip-worktree $(git status | grep deleted | awk '{print $2}') \
     && cargo build --release --locked \
