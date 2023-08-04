@@ -1,5 +1,4 @@
-# FROM python:3.6.13-slim-buster
-FROM centos:7.8.2003
+FROM registry.xiaojukeji.com/didionline/sre-didi-centos7-base-v2:stable
 
 ARG BUILD_ARCH=x86_64
 # Pin the Rust version for now
@@ -7,27 +6,18 @@ ARG RUST_TOOLCHAIN_VERSION=1.50.0
 ENV BUILD_ARCH=${BUILD_ARCH}
 ENV RUST_TOOLCHAIN_VERSION=${RUST_TOOLCHAIN_VERSION}
 
-# ENV RUSTUP_HOME=/usr/local/rustup \
-#     CARGO_HOME=/usr/local/cargo \
-#     PATH=/usr/local/cargo/bin:$PATH
-
 # relay的编译依赖cmake3.2以上，系统默认的是2.8.12.2
-# COPY ./cmake-3.19.4.tar.gz /
+COPY ./cmake-3.24.3.tar.gz /
+# COPY ./relay /relay
 RUN set -x \
-    && curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo \
-    && yum clean all -y \
-    && yum update -y \
-    && yum makecache -y \
-    && yum --nogpg install -y centos-release-scl scl-utils git openssl-devel zip \
-    && yum --nogpg install -y devtoolset-7-gcc* \
-    # && yum install -y gcc-6 \
-    # && tar zxvf cmake-3.* \
-    # && rm cmake-3.*tar.gz \
-    # && cd cmake-3.* \
-    # && ./bootstrap --prefix=/usr/local \
-    # && make -j$(nproc) \
-    # && make install \
-    # && rm -rf /cmake-3.* \
+    && yum --nogpg install -y gcc gcc-c++ make openssl-devel zip git \
+    && tar zxvf cmake-3.* \
+    && rm cmake-3.*tar.gz \
+    && cd cmake-3.* \
+    && ./bootstrap --prefix=/usr/local \
+    && make -j$(nproc) \
+    && make install \
+    && rm -rf /cmake-3.* \
     && yum clean all
 
 ENV RUSTUP_HOME=/usr/local/rustup \
@@ -42,8 +32,6 @@ WORKDIR /work
 # #####################
 # ### Builder stage ###
 # #####################
-
-# FROM symbolicator-deps AS symbolicator-builder
 
 # Build with the modern compiler toolchain enabled
 RUN echo "source scl_source enable devtoolset-7" >> /etc/bashrc \
