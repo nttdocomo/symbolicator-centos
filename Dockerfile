@@ -1,4 +1,4 @@
-FROM registry.xiaojukeji.com/didionline/sre-didi-centos7-base-v2:stable
+FROM centos:7.8.2003
 
 ARG BUILD_ARCH=x86_64
 # Pin the Rust version for now
