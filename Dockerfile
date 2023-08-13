@@ -47,4 +47,4 @@ RUN chmod ugo+x /bin/sentry-cli \
     && sentry-cli --version \
     && SOURCE_BUNDLE="$(sentry-cli difutil bundle-sources ./target/release/symbolicator.debug)" \
     && mv "$SOURCE_BUNDLE" /opt/symbolicator.src.zip \
-    && yum autoremove -y git openssl-devel zip
+    && yum autoremove -y git openssl-devel zip devtoolset-7-gcc*
