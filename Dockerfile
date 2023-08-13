@@ -6,18 +6,13 @@ ARG RUST_TOOLCHAIN_VERSION=1.50.0
 ENV BUILD_ARCH=${BUILD_ARCH}
 ENV RUST_TOOLCHAIN_VERSION=${RUST_TOOLCHAIN_VERSION}
 
-# relay的编译依赖cmake3.2以上，系统默认的是2.8.12.2
-COPY ./cmake-3.24.3.tar.gz /
-# COPY ./relay /relay
 RUN set -x \
-    && yum --nogpg install -y gcc gcc-c++ make openssl-devel zip git \
-    && tar zxvf cmake-3.* \
-    && rm cmake-3.*tar.gz \
-    && cd cmake-3.* \
-    && ./bootstrap --prefix=/usr/local \
-    && make -j$(nproc) \
-    && make install \
-    && rm -rf /cmake-3.* \
+    && curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo \
+    && yum clean all -y \
+    && yum update -y \
+    && yum makecache -y \
+    && yum --nogpg install -y centos-release-scl scl-utils git openssl-devel zip \
+    && yum --nogpg install -y devtoolset-7-gcc* \
     && yum clean all
 
 ENV RUSTUP_HOME=/usr/local/rustup \
@@ -34,9 +29,9 @@ WORKDIR /work
 # #####################
 
 # Build with the modern compiler toolchain enabled
-# RUN echo "source scl_source enable devtoolset-7" >> /etc/bashrc \
-#     && source /etc/bashrc \
-RUN echo -e "[net]\ngit-fetch-with-cli = true" > $CARGO_HOME/config \
+RUN echo "source scl_source enable devtoolset-7" >> /etc/bashrc \
+    && source /etc/bashrc \
+    && echo -e "[net]\ngit-fetch-with-cli = true" > $CARGO_HOME/config \
     && git clone --branch 0.3.3 https://github.com/getsentry/symbolicator.git . \
     # && git update-index --skip-worktree $(git status | grep deleted | awk '{print $2}') \
     && cargo build --release --locked \
@@ -51,4 +46,5 @@ RUN chmod ugo+x /bin/sentry-cli \
     # Collect source bundle
     && sentry-cli --version \
     && SOURCE_BUNDLE="$(sentry-cli difutil bundle-sources ./target/release/symbolicator.debug)" \
-    && mv "$SOURCE_BUNDLE" /opt/symbolicator.src.zip
+    && mv "$SOURCE_BUNDLE" /opt/symbolicator.src.zip \
+    && yum autoremove -y centos-release-scl scl-utils git openssl-devel zip devtoolset-7-gcc*
