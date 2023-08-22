@@ -31,4 +31,4 @@ jobs:
       - uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ env.DOCKERHUB_REPO }}:latest
+          tags: ${{ env.DOCKERHUB_REPO }}:0.3.3
